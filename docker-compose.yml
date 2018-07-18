@@ -1,0 +1,39 @@
+version: "3.5"
+services:
+  mongo1:
+    container_name: mongo1
+    image: mongo:latest
+    restart: always
+    ports:
+    - 30001:27017
+    volumes:
+    - ./cluster/mongod.conf:/etc/mongod.conf
+    - mongo_data1:/data/db
+    command: mongod --config /etc/mongod.conf
+
+  mongo2:
+    container_name: mongo2
+    image: mongo:latest
+    restart: always
+    ports:
+    - 30002:27017
+    volumes:
+    - ./cluster/mongod.conf:/etc/mongod.conf
+    - mongo_data2:/data/db
+    command: mongod --config /etc/mongod.conf
+
+  mongo3:
+    container_name: mongo3
+    image: mongo:latest
+    restart: always
+    ports:
+    - 30003:27017
+    volumes:
+    - ./cluster/mongod.conf:/etc/mongod.conf
+    - mongo_data3:/data/db
+    command: mongod --config /etc/mongod.conf
+
+volumes:
+  mongo_data1:
+  mongo_data2:
+  mongo_data3:
