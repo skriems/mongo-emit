@@ -10,7 +10,7 @@ class ChangeStream(object):
         db = target
         collection = None
         if '.' in target:
-            db, collection = target.strip().split('.')
+            db, collection = target.strip().split('.', 1)
 
         target = getattr(self.client, db)
         if collection:
