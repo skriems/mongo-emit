@@ -27,7 +27,7 @@ params = dict(
         name.split('.')[:-1] if nspkg_technique == 'managed'
         else []
     ),
-    python_requires='>=3.6',
+    python_requires='>=3.5',
     install_requires=[
         'pymongo>=3.7.1',
         'python-dateutil>=2.7.3',
