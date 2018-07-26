@@ -19,11 +19,11 @@ I've added an [Arbiter][] for each shard which needs to be added to the replicas
 
 Let's assume `sh1a` is the Master of the first shard:
 
-    mongo --port 27001 --eval "rs.addArb('sh1Arb:27005')
+    mongo --port 27001 --eval "rs.addArb('sh1Arb:27005')"
 
 And for the second shard:
 
-    mongo --port 27002 --eval "rs.addArb('sh1Arb:27006')
+    mongo --port 27002 --eval "rs.addArb('sh1Arb:27006')"
 
 Now you can connect to the router via
 
