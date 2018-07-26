@@ -1,0 +1,93 @@
+version: '3'
+
+services:
+
+  # shard router
+  router:
+    image: mongo:3.6
+    command: mongos --bind_ip_all --port 27017 --syslog --configdb cfgsvr/config1:27019
+    volumes:
+    - ./scripts:/scripts
+    ports:
+    - 27017:27017
+    depends_on:
+    - config1
+    - sh1a
+    - sh2a
+
+  # config
+  config1:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27019 --configsvr --replSet cfgsvr
+    ports:
+    - 27019:27019
+
+  config2:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27020 --configsvr --replSet cfgsvr
+    ports:
+    - 27020:27020
+
+  sh1a:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27001 --shardsvr --replSet sh1
+    volumes:
+    - mgo_sh1a:/data/db
+    ports:
+    - 27001:27001
+
+  sh1b:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27003 --shardsvr --replSet sh1
+    volumes:
+    - mgo_sh1b:/data/db
+    ports:
+    - 27003:27003
+    depends_on:
+    - sh1a
+
+  sh1Arb:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27005 --replSet sh1
+    volumes:
+    - mgo_sh1Arb:/data/arb
+    ports:
+    - 27005:27005
+    depends_on:
+    - sh1a
+
+  sh2a:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27002 --shardsvr --replSet sh2
+    volumes:
+    - mgo_sh2a:/data/db
+    ports:
+    - 27002:27002
+
+  sh2b:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27004 --shardsvr --replSet sh2
+    volumes:
+    - mgo_sh2b:/data/db
+    ports:
+    - 27004:27004
+    depends_on:
+    - sh2a
+
+  sh1Arb:
+    image: mongo:3.6
+    command: mongod --bind_ip_all --port 27006 --replSet sh1
+    volumes:
+    - mgo_sh2Arb:/data/arb
+    ports:
+    - 27006:27006
+    depends_on:
+    - sh1a
+
+volumes:
+  mgo_sh1a:
+  mgo_sh1b:
+  mgo_sh1Arb:
+  mgo_sh2a:
+  mgo_sh2b:
+  mgo_sh2Arb:
